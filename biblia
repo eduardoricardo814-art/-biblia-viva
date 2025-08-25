@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bíblia Viva</title>
+  <link rel="stylesheet" href="estilo.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <div class="container">
+    <h1>Bíblia Viva</h1>
+    <p>Leia, busque e medite na Palavra de Deus</p>
+
+    <nav>
+      <a href="leitura.html" class="btn">📖 Ler a Bíblia</a>
+      <a href="busca.html" class="btn">🔍 Buscar Versículo</a>
+      <a href="favoritos.html" class="btn">⭐ Meus Favoritos</a>
+      <a href="plano.html" class="btn">📅 Plano de Leitura</a>
+    </nav>
+
+    <button onclick="toggleDarkMode()" class="dark-toggle">🌙 Modo Escuro</button>
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+  </script>
+</body>
+</html> 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leitura - Bíblia Viva</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="container">
+    <h2 id="titulo">Carregando...</h2>
+    <div id="versiculos"></div>
+
+    <div class="navegacao">
+      <button onclick="anterior()">⬅️ Anterior</button>
+      <button onclick="proximo()">Próximo ➡️</button>
+    </div>
+    <a href="index.html" class="btn voltar">Voltar ao Início</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Carrega Gênesis 1 por padrão
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const livro = params.get("livro") || "Gênesis";
+      const cap = parseInt(params.get("cap")) || 1;
+      carregarCapitulo(livro, cap);
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buscar - Bíblia Viva</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Buscar na Bíblia</h2>
+    <input type="text" id="buscaInput" placeholder="Digite uma palavra..." onkeyup="buscar()" />
+    <div id="resultados"></div>
+    <a href="index.html" class="btn voltar">Voltar ao Início</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favoritos - Bíblia Viva</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Meus Versículos Favoritos</h2>
+    <div id="favoritos"></div>
+    <a href="index.html" class="btn voltar">Voltar ao Início</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", listarFavoritos);
+  </script>
+</body>
+</html>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plano - Bíblia Viva</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Plano de Leitura 365 Dias</h2>
+    <p><strong>Hoje:</strong> Gênesis 1-2</p>
+    <p>Leia um capítulo por dia e complete a Bíblia em um ano!</p>
+    <a href="leitura.html?livro=Gênesis&cap=1" class="btn">Ler Hoje</a>
+    <a href="index.html" class="btn voltar">Voltar ao Início</a>
+  </div>
+</body>
+</html>
+    let livroAtual = "Gênesis";
+let capituloAtual = 1;
+
+// Dados da Bíblia (exemplo com Gênesis 1 e 2)
+const biblia = {
+  "Gênesis": [
+    {
+      "capitulo": 1,
+      "versiculos": [
+        "No princípio criou Deus os céus e a terra.",
+        "E a terra era sem forma e vazia; e as trevas estavam sobre a face do abismo, e o Espírito de Deus se movia sobre a face das águas.",
+        "E disse Deus: Haja luz; e houve luz.",
+        "E viu Deus que era boa a luz; e fez separação entre a luz e as trevas.",
+        "E chamou Deus à luz Dia, e às trevas chamou Noite. E foi a tarde e a manhã, o dia primeiro."
+      ]
+    },
+    {
+      "capitulo": 2,
+      "versiculos": [
+        "Assim foram concluídos os céus e a terra, e todo o seu exército.",
+        "E havia Deus terminado no dia sétimo a sua obra, que fizera; e descansou no dia sétimo de toda a sua obra, que tinha feito.",
+        "E abençoou Deus o dia sétimo, e o santificou; porque nele descansou de toda a sua obra, que Deus criara e fizera."
+      ]
+    }
+  ]
+};
+
+function carregarCapitulo(livro, cap) {
+  livroAtual = livro;
+  capituloAtual = cap;
+
+  const capitulo = biblia[livro]?.find(c => c.capitulo === cap);
+  if (!capitulo) {
+    document.getElementById("titulo").textContent = "Capítulo não encontrado";
+    return;
+  }
+
+  document.getElementById("titulo").textContent = `${livro} ${cap}`;
+
+  const versiculosDiv = document.getElementById("versiculos");
+  versiculosDiv.innerHTML = "";
+
+  capitulo.versiculos.forEach((texto, i) => {
+    const p = document.createElement("p");
+    p.innerHTML = `<strong>${i+1}</strong> ${texto}`;
+
+    const btn = document.createElement("button");
+    btn.textContent = "⭐";
+    btn.onclick = () => favoritar(livro, cap, i+1, texto);
+    p.appendChild(btn);
+
+    versiculosDiv.appendChild(p);
+  });
+}
+
+function favoritar(livro, cap, vers, texto) {
+  const favs = JSON.parse(localStorage.getItem("favoritos") || "[]");
+  const existe = favs.find(f => f.livro === livro && f.cap === cap && f.vers === vers);
+  if (!existe) {
+    favs.push({ livro, cap, vers, texto });
+    localStorage.setItem("favoritos", JSON.stringify(favs));
+    alert(`Versículo salvo: ${livro} ${cap}:${vers}`);
+  } else {
+    alert("Já está nos favoritos!");
+  }
+}
+
+function listarFavoritos() {
+  const favs = JSON.parse(localStorage.getItem("favoritos") || "[]");
+  const div = document.getElementById("favoritos");
+  if (favs.length === 0) {
+    div.innerHTML = "<p>Nenhum versículo favorito ainda.</p>";
+    return;
+  }
+
+  favs.forEach(f => {
+    const p = document.createElement("p");
+    p.innerHTML = `<strong>${f.livro} ${f.cap}:${f.vers}</strong><br>${f.texto}`;
+    div.appendChild(p);
+  });
+}
+
+function proximo() {
+  capituloAtual++;
+  carregarCapitulo(livroAtual, capituloAtual);
+}
+
+function anterior() {
+  if (capituloAtual > 1) {
+    capituloAtual--;
+    carregarCapitulo(livroAtual, capituloAtual);
+  }
+}
+
+function buscar() {
+  const termo = document.getElementById("buscaInput").value.toLowerCase();
+  const resultadosDiv = document.getElementById("resultados");
+  resultadosDiv.innerHTML = "<p>Buscando...</p>";
+
+  let encontrados = [];
+
+  for (const livro in biblia) {
+    biblia[livro].forEach(capitulo => {
+      capitulo.versiculos.forEach((v, i) => {
+        if (v.toLowerCase().includes(termo)) {
+          encontrados.push(`<strong>${livro} ${capitulo.capitulo}:${i+1}</strong> — ${v}`);
+        }
+      });
+    });
+  }
+
+  resultadosDiv.innerHTML = "";
+  if (encontrados.length === 0) {
+    resultadosDiv.innerHTML = "<p>Nenhum resultado encontrado.</p>";
+  } else {
+    encontrados.forEach(res => {
+      const p = document.createElement("p");
+      p.innerHTML = res;
+      resultadosDiv.appendChild(p);
+    });
+  }
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.dark .container {
+  background: #1e1e1e;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+h1, h2 {
+  color: #4a5568;
+  text-align: center;
+}
+
+body.dark h1, body.dark h2 {
+  color: #a0aec0;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  margin: 15px 0;
+  padding: 16px;
+  font-size: 1.1em;
+  text-align: center;
+  background: #4a5568;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+body.dark .btn {
+  background: #2d3748;
+}
+
+.btn.voltar {
+  background: #718096;
+  font-size: 0.9em;
+  margin-top: 20px;
+}
+
+.dark-toggle {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 15px;
+  background: #718096;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+body.dark input[type="text"] {
+  background: #2d3748;
+  color: white;
+  border-color: #4a5568;
+}
+
+#versiculos p {
+  margin: 15px 0;
+  line-height: 1.7;
+  font-size: 1.1em;
+}
+
+#versiculos button {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.navegacao {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.navegacao button {
+  padding: 12px 20px;
+  background: #4a5568;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+body.dark .navegacao button {
+  background: #2d3748;
+}
+{
+  "name": "Bíblia Viva",
+  "short_name": "Bíblia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4a5568",
+  "description": "App simples e leve para ler a Bíblia Sagrada no celular.",
+  "icons": [
+    {
+      "src": "imagens/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "imagens/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
